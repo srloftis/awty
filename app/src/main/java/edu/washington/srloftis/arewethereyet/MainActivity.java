@@ -11,6 +11,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
+import java.util.ArrayList;
+import android.telephony.SmsManager;
 
 
 public class MainActivity extends Activity{
@@ -53,7 +55,12 @@ public class MainActivity extends Activity{
                             if(startBtn.getText().equals("Start")) {
                                 startBtn.setText("Stop");
                                 Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
-                                intent.putExtra(MESSAGE, phoneEdit.getText() + ": " + messageEdit.getText());
+                                //intent.putExtra(MESSAGE, phoneEdit.getText() + ": " + messageEdit.getText());
+                                ArrayList<String> extra = new ArrayList<String>();
+                                extra.add(phoneEdit.getText().toString());
+                                extra.add(messageEdit.getText().toString());
+                                intent.putStringArrayListExtra(MESSAGE, extra);
+                                intent.setAction("sendText");
                                 alarmIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
                                 interval = interval * 60 * 1000;
                                 alarmMgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
